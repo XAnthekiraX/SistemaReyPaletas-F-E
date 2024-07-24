@@ -1,12 +1,14 @@
+import './App.css'
+import NavBar from './components/NavBar'
 
 
 function App() {
 
 
   return (
-    <>
-      <h1>Hola a todos</h1>
-    </>
+    <div className='w-screen absolute'>
+      <NavBar></NavBar>
+    </div>
   )
 }
 
