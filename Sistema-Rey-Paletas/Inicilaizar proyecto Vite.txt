@@ -25,6 +25,6 @@ content: [
 
 --------------------------------------------------------------------------------------------------------
 
-Instalar React Router Doom para la anvegacion entre rutas/paginas
+Instalar React Router Doom para la navegación entre rutas/paginas
 
 npm i react-router-dom
