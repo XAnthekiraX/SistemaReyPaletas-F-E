@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.seeBar{
+    animation:SideBarAnimation 0.5s ease forwards;
+}
+
+@keyframes SideBarAnimation{
+    0%{
+        left: -110%;
+    }
+    100%{
+        left: 0;
+    }
+}

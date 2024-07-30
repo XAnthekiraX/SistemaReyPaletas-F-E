@@ -1,8 +1,15 @@
 {
     "cSpell.ignoreWords": [
+        "Layput",
+        "Ligth",
         "berskshire",
+        "bodydark",
+        "boton",
+        "boxdark",
+        "renderizaran",
         "serif",
-        "tailwindcss"
+        "tailwindcss",
+        "valos"
     ],
     "java.compile.nullAnalysis.mode": "automatic"
 }
