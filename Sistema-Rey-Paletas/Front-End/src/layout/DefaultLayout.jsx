@@ -14,14 +14,14 @@ const DefaultLayout = ({ children }) => {
 
     return (
         <div className="w-full h-screen flex justify-end relative">
-            <div className={`duration-100 w-[17rem] h-full lg:relative lg:w-[25rem] ${isSideBarVisible ? 'seeBar' : '-left-[110%] lg:left-0'} absolute overflow-hidden z-10`}>
+            <div className={`duration-[1s] w-[17rem] h-full lg:relative lg:w-[25rem] ${isSideBarVisible ? 'left-0' : '-left-72'} lg:left-0 absolute overflow-hidden z-10`}>
                 <SideBar>
                     <ButtonReturn onClick={toggleSideBar} />
                 </SideBar>
             </div>
             <div className="w-full flex flex-col">
                 <HeaderBar onButtonMenuClick={toggleSideBar} />
-                <div className='w-full h-screen bg-white dark:bg-shark-950'>
+                <div className='w-full h-screen bg-athens-gray-50 dark:bg-shark-950 overflow-hidden'>
                     {children}
                 </div>
             </div>

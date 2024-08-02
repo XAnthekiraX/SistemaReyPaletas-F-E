@@ -21,19 +21,19 @@ export default function ContentButtonArrow({seeOptions}) {
     }
 
     return (
-        <div className={`absolute ${seeOptions ? 'h-auto' : 'h-0 opacity-0'} w-72  justify-center items-center border -right-4 top-[2.70rem] bg-white text-gray-500 dark:bg-big-stone-950 dark:text-white dark:border-big-stone-800 z-0 px-4`}>
-            <div className='w-auto'>
-                <div className='flex w-auto gap-4 justify-start items-center my-4 mx-4'>
+        <div className={`absolute ${seeOptions ? 'h-auto' : 'h-0 overflow-hidden opacity-0'} w-72  justify-center items-center border -right-4 top-[2.70rem] bg-white text-gray-500 dark:bg-big-stone-950 dark:text-white dark:border-big-stone-800 z-0 `}>
+            <div className='w-full'>
+                <div className='flex w-full px-7 py-3 gap-4 justify-start items-center rounded-md hover:bg-big-stone-200 dark:hover:text-black'>
                     <UserIcon />
                     <span className='w-32'>Mi perfil</span>
                 </div>
-                <div className='flex w-auto gap-4 justify-start items-center my-4 mx-4'>
+                <div className='flex w-full px-7 py-3 gap-4 justify-start items-center rounded-md hover:bg-big-stone-200 dark:hover:text-black'>
                     <ConfigIcon />
                     <span className='w-32'>Configuraciones</span>
                 </div>
             </div>
             <div className=' border-t dark:border-big-stone-800 w-full'>
-                <div className='flex w-auto gap-4 justify-start items-center my-4 mx-4'>
+                <div className='flex w-full px-7 py-3 gap-4 justify-start items-center rounded-md hover:bg-big-stone-200 dark:hover:text-black'>
                     <LogoutIcon />
                     <span className='w-32'>Salir</span>
                 </div>

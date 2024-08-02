@@ -1,16 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.seeBar{
-    animation:SideBarAnimation 0.5s ease forwards;
-}
-
-@keyframes SideBarAnimation{
-    0%{
-        left: -110%;
-    }
-    100%{
-        left: 0;
-    }
-}

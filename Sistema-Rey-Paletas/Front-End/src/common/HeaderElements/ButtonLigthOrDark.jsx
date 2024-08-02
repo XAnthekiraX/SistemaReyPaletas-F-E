@@ -32,7 +32,7 @@ export default function ButtonLigthOrDark() {
     }
 
     return (
-        <div className={`border min-w-[80px] max-w-[30%] p-0.5 h-auto rounded-r-full rounded-l-full flex items-center  transition-all ${darkMode ? 'justify-end bg-blue-500' : 'bg-gray-200 justify-start'}`} onClick={handleClick}>
+        <div className={`border min-w-[80px] max-w-[30%] p-0.5 h-auto rounded-r-full rounded-l-full flex items-center cursor-pointer  transition-all ${darkMode ? 'justify-end bg-blue-500' : 'bg-gray-200 justify-start'}`} onClick={handleClick}>
             <div className='border h-7 w-7 p-1 rounded-full flex justify-center items-center bg-white shadow-xl' >
                 <Sun />
                 <Moon />

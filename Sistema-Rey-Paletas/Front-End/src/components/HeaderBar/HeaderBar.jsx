@@ -23,7 +23,12 @@ export default function HeaderBar({ onButtonMenuClick }) {
             <img src={LogoMin} alt="Imagen para el header" className='w-0 sm:w-auto lg:w-0' />
             <ButtonLigthOrDark />
             <ButtonNotification />
-            <div className='flex items-center gap-2' onClick={toggleOptions}>
+            <div className='w-0 lg:px-2 lg:w-auto overflow-hidden flex flex-col text-xs text-end'>
+                <span className='text-black font-semibold'>Nombre</span>
+                <span className='text-black font-semibold'>Apellido</span>
+                <span className='text-gray-700'>cargo</span>
+            </div>
+            <div className='flex items-center gap-2 cursor-pointer' onClick={toggleOptions}>
                 <img src={UserImg} className='w-11 h-11' alt="Imagen del usuario" />
                 <ButtonArrowDown state={optionsVisible} />
             </div>
