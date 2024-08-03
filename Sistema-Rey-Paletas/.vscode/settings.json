@@ -1,0 +1,12 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cSpell.ignoreWords": [
+        "Ligth",
+        "classname",
+        "renderizaran"
+    ],
+    "java.project.sourcePaths": [
+        "Front-End/src/common/SideBarElements",
+        "Front-End/src"
+    ]
+}
