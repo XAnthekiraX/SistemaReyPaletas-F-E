@@ -15,23 +15,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "franchises")
-public class Franchises {
+@Table(name = "users")
+public class Users {
 
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "franchises_id")
-    private Long franchisesId;
+    @Column(name = "user_id")
+    private Long userId;
 
-    // @Column Mapea este campo a la columna en la base de datos
-    // El nombre del campo en la base de datos será 'city'
-    @Column(name = "city")
-    private String city; // =>El tipo de dato del campo sera de String
+    @Column(name = "franchise_id")
+    private Long franchiseId;
 
-    @Column(name = "country")
-    private String country;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password_hash")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
+
 }
