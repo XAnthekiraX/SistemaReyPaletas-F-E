@@ -57,7 +57,7 @@ export default function SideBar({ children }) {
     };
 
     return (
-        <div className='w-full overflow-hidden h-full bg-big-stone-950 dark:bg-big-stone-900 transition-all flex flex-col px-4 justify-start items-start overflow-y-auto'>
+        <div className='w-full overflow-hidden h-full bg-big-stone-950 dark:bg-big-stone-900 transition-all flex flex-col px-4 justify-start items-start overflow-y-auto z-3'>
             <div className="flex text-gray-400 w-full justify-between items-center">
                 <img src={Logo} alt="Logo y Nombre del sistema" className="h-7 my-7 w-auto" />
                 {children}

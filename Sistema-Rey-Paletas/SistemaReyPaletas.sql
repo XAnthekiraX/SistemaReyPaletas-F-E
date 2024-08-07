@@ -31,14 +31,14 @@ CREATE TABLE "customers" (
 );
 
 CREATE TABLE "products" (
-  "product_id" SERIAL PRIMARY KEY,
+  "product_id" varchar(10) PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
-  "category_id" INT,
+  "category_id" varchar(10),
   "price" DECIMAL(10,2) NOT NULL
 );
 
 CREATE TABLE "categories" (
-  "category_id" SERIAL PRIMARY KEY,
+  "category_id" varchar(10) PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
   "description" TEXT
 );
@@ -46,7 +46,7 @@ CREATE TABLE "categories" (
 CREATE TABLE "inventory" (
   "inventory_id" SERIAL PRIMARY KEY,
   "franchise_id" INT,
-  "product_id" INT,
+  "product_id" varchar(10),
   "quantity" INT NOT NULL,
   "date_udpdate" TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
@@ -66,7 +66,7 @@ CREATE TABLE "invoices" (
 CREATE TABLE "invoice_items" (
   "invoice_item_id" SERIAL PRIMARY KEY,
   "invoice_id" INT,
-  "product_id" INT,
+  "product_id" varchar(10),
   "quantity" INT NOT NULL,
   "unit_price" DECIMAL(10,2) NOT NULL,
   "subtotal" DECIMAL(10,2) NOT NULL
@@ -113,7 +113,7 @@ CREATE TABLE "product_registry" (
 CREATE TABLE "product_registry_items" (
   "registry_item_id" SERIAL PRIMARY KEY,
   "registry_id" INT,
-  "product_id" INT,
+  "product_id" varchar(10),
   "quantity" INT NOT NULL
 );
 
