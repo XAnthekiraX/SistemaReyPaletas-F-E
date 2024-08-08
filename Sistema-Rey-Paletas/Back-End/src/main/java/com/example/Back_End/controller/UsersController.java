@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @CrossOrigin(origins = "http://localhost:5173/")
 @RestController
-@RequestMapping("/api/v4")
+@RequestMapping("/api/v3")
 public class UsersController {
 
     @Autowired
