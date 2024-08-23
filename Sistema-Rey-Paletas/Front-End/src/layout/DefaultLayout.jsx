@@ -20,7 +20,7 @@ const DefaultLayout = ({ children }) => {
             </div>
             <div className="w-full flex flex-col">
                 <HeaderBar onButtonMenuClick={toggleSideBar} />
-                <div className='w-full h-screen bg-athens-gray-50 dark:bg-shark-950 overflow-hidden z-[1]'>
+                <div className='w-full h-screen bg-athens-gray-50 dark:bg-shark-950 overflow-hidden z-0'>
                     {children}
                 </div>
             </div>

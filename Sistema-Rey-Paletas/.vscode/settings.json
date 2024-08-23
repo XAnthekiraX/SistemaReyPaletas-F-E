@@ -8,5 +8,6 @@
     "java.project.sourcePaths": [
         "Front-End/src/common/SideBarElements",
         "Front-End/src"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

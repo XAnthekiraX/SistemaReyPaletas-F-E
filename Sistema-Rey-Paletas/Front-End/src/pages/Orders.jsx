@@ -10,7 +10,7 @@ export default function Orders() {
         setSelect(prevState => !prevState);
     };
     return (
-        <div className='h-full gap-5 w-full flex flex-col relative justify-start items-center overflow-hidden overflow-y-auto lg:px-7  -z-10'>
+        <div className='h-full gap-5 w-full flex flex-col relative justify-start items-center overflow-hidden overflow-y-auto lg:px-7 '>
             <div className={`${select ? 'w-full h-full' : 'w-0 h-0'} bg-black absolute  overflow-hidden flex justify-center items-center bg-opacity-50`}>
                 <FormOrder onCLickClose={handleClickClose} />
             </div>

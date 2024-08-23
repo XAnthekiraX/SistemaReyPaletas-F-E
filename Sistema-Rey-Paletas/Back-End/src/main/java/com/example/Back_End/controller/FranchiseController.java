@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Back_End.exception.ResourceNotFoundException;
 import com.example.Back_End.models.Franchises;
-import com.example.Back_End.respository.FranchiseRepository;
-    
+import com.example.Back_End.repository.FranchiseRepository;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +60,7 @@ public class FranchiseController {
                         () -> new ResourceNotFoundException("ID" + franchisesId + "NO EXISTENTE"));
 
         franchises.setCity(franchiseRequest.getCity());
+        franchises.setCodFranchise(franchiseRequest.getCodFranchise());
         franchises.setCountry(franchiseRequest.getCountry());
         franchises.setStatus(franchiseRequest.getStatus());
 

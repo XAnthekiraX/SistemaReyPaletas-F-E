@@ -24,14 +24,18 @@ public class Users {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "franchise_id")
-    private Long franchiseId;
+    @Column(name = "cod_franchise")
+    private String codFranchise;
 
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "ci")
+    private String ci;
+
 
     @Column(name = "email")
     private String email;

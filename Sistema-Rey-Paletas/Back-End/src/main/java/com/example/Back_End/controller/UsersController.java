@@ -3,6 +3,7 @@ package com.example.Back_End.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Back_End.exception.ResourceNotFoundException;
 import com.example.Back_End.models.Users;
-import com.example.Back_End.respository.UsersRepository;
+import com.example.Back_End.repository.UsersRepository;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,15 +31,39 @@ public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping("/users")
-    public List<Users> listUsers() {
-        return usersRepository.findAll(Sort.by(Sort.Direction.ASC, "userId"));
+    // Validar CI, correo, y contraseña
+    @GetMapping("/users/{emailOrCi}/password/{password}")
+    public ResponseEntity<Map<String, Object>> validateUser(
+            @PathVariable String emailOrCi,
+            @PathVariable String password) {
+
+        // Llamamos al método del repositorio que busca el usuario por email/CI y
+        // contraseña
+        Optional<Users> user = usersRepository.getAuthUser(emailOrCi, password);
+
+        // Crear un mapa para la respuesta
+        Map<String, Object> response = new HashMap<>();
+
+        if (user.isPresent()) {
+            response.put("success", true);
+            response.put("user", user.get());
+            return ResponseEntity.ok(response); // Si el usuario existe, responde con 200 OK
+        } else {
+            response.put("success", false);
+            response.put("message", "Invalid email, CI, or password");
+            return ResponseEntity.status(401).body(response); // Si no existe, responde con 401 Unauthorized
+        }
     }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<Users> listUsersById(@PathVariable long userId) {
-        Users users = usersRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario con ID " + userId + " no existe"));
+    @GetMapping("/users")
+    public List<Users> listUsers() {
+        return usersRepository.findAll(Sort.by(Sort.Direction.ASC, "ci"));
+    }
+
+    @GetMapping("/users/{ci}")
+    public ResponseEntity<Users> listUsersById(@PathVariable String ci) {
+        Users users = usersRepository.findByCi(ci)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con Ci " + ci + " no existe"));
         return ResponseEntity.ok(users);
     }
 
@@ -46,29 +72,32 @@ public class UsersController {
         return usersRepository.save(users);
     }
 
-    @PutMapping("users/{userId}")
-    public ResponseEntity<Users> updateUsers(@PathVariable long userId, @RequestBody Users usersRequest) {
+    @PutMapping("/users/{ci}")
+    public ResponseEntity<Users> updateUsers(@PathVariable String ci, @RequestBody Users usersRequest) {
 
-        Users users = usersRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario con ID " + userId + " no existe"));
+        // Encuentra al usuario por su CI
+        Users users = usersRepository.findByCi(ci)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con CI " + ci + " no existe"));
 
-        users.setFranchiseId(usersRequest.getFranchiseId());
+        // Actualiza los campos con los valores de la solicitud
+        users.setCodFranchise(usersRequest.getCodFranchise());
         users.setFirstName(usersRequest.getFirstName());
         users.setLastName(usersRequest.getLastName());
+        users.setCi(usersRequest.getCi()); // Asegúrate de que esto esté asignado correctamente
         users.setEmail(usersRequest.getEmail());
         users.setPassword(usersRequest.getPassword());
         users.setRole(usersRequest.getRole());
 
-        Users updtUsers = usersRepository.save(users);
-        return ResponseEntity.ok(updtUsers);
-
+        // Guarda los cambios en la base de datos
+        Users updatedUsers = usersRepository.save(users);
+        return ResponseEntity.ok(updatedUsers);
     }
 
-    @DeleteMapping("users/{userId}")
-    public ResponseEntity<Map<String, Boolean>> deleteUsers(@PathVariable long userId) {
+    @DeleteMapping("users/{ci}")
+    public ResponseEntity<Map<String, Boolean>> deleteUsers(@PathVariable String ci) {
 
-        Users users = usersRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario con ID " + userId + " no encontrado"));
+        Users users = usersRepository.findByCi(ci)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con ID " + ci + " no encontrado"));
 
         usersRepository.delete(users);
         Map<String, Boolean> response = new HashMap<>();

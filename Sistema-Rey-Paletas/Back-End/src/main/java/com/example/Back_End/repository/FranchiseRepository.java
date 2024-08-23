@@ -1,4 +1,4 @@
-package com.example.Back_End.respository;
+package com.example.Back_End.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

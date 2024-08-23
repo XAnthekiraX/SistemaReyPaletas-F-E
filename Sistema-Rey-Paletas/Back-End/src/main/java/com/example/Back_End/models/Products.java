@@ -19,14 +19,22 @@ public class Products {
 
     @Id
     @Column(name = "product_id")
-    private String productId;
+    private Long productId;
+
+    @Column(name = "cod_product", nullable = false)
+    private String codProduct;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "category_id", nullable = false)
+    @Column(name = "cod_category", nullable = false)
     private String categoryId;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;
+
+    @Column (name = "cod_franchise", nullable = false)
+    private String codFranchise;
+
+
 }

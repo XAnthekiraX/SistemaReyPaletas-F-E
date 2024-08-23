@@ -19,15 +19,15 @@ import lombok.NoArgsConstructor;
 public class Franchises {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "franchises_id")
     private Long franchisesId;
 
-    // @Column Mapea este campo a la columna en la base de datos
-    // El nombre del campo en la base de datos será 'city'
+    @Column(name = "cod_franchise")
+    private String codFranchise;
+
     @Column(name = "city")
-    private String city; // =>El tipo de dato del campo sera de String
+    private String city;
 
     @Column(name = "country")
     private String country;
