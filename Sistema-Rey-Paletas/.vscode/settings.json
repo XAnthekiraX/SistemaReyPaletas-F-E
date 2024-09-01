@@ -2,8 +2,12 @@
     "java.compile.nullAnalysis.mode": "automatic",
     "cSpell.ignoreWords": [
         "Ligth",
+        "Renderiza",
         "classname",
-        "renderizaran"
+        "renderiza",
+        "renderizaran",
+        "subelemento",
+        "subelementos"
     ],
     "java.project.sourcePaths": [
         "Front-End/src/common/SideBarElements",

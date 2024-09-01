@@ -47,9 +47,9 @@ export default function TableProduct() {
 }
 
 Garbage.propTypes={
-    classname:PropTypes.string.isRequired
+    classname:PropTypes.string,
 }
 
 Edit.propTypes={
-    classname:PropTypes.string.i
+    classname:PropTypes.string,
 }

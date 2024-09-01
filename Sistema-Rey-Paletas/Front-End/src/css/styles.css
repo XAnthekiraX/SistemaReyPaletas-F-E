@@ -3,3 +3,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* SideBar Animation */
+.sideBar {
+    transition: all;
+    height: 0px;
+
+    &.active{
+        transition: all;
+        animation-duration: 1s;
+        height: auto;
+    }
+}

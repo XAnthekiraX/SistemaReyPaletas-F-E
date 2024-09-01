@@ -2,58 +2,21 @@ import PropTypes from 'prop-types';
 import Logo from "../../images/logo/logo.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { NavElements } from '../../common/SideBarElements/NavElements';
 
 export default function SideBar({ children }) {
-    // Estado que mantiene el índice del elemento seleccionado
-    // Inicialmente, se establece en 0 para seleccionar el primer elemento por defecto
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [visibleSubElements, setVisibleSubElements] = useState({});
 
-    // Array de objetos que representa los elementos de navegación
-    // Cada objeto contiene el nombre, la dirección y el ícono del elemento
-    const NavElements = [
-        {
-            nameNav: 'DashBoard',
-            dirNav: '/DashBoard',
-            iconNav: (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full" width="1em" height="1em" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M4 13h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1m-1 7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1zm10 0a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1zm1-10h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1" />
-                </svg>
-            ),
-        },
-        {
-            nameNav: 'Productos',
-            dirNav: '/Product',
-            iconNav: (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full" width="1em" height="1em" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 21.5V17m-4 0h8V7a4 4 0 1 0-8 0zm0-6.5L16 7m-8 7.5l8-3.5" />
-                </svg>
-            ),
-        },
-        {
-            nameNav: 'Pedidos',
-            dirNav: '/Orders',
-            iconNav: (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full" width="1em" height="1em" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M5 19V8.1L3.242 4.234l.916-.426L6.084 8.05h11.832l1.926-4.242l.916.427L19 8.1V19zm5-6.5h4q.213 0 .356-.144t.144-.357t-.144-.356T14 11.5h-4q-.213 0-.356.144t-.144.357t.144.356t.356.143" />
-                </svg>
-            ),
-        },
-        {
-            nameNav: 'Facturas',
-            dirNav: '/Invoices',
-            iconNav: (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full" width="1em" height="1em" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M9.86 21.43L9 22l-3-2l-3 2V3h18v7.2c-.9-.38-2-.2-2.76.55l-8.38 8.38zM17 7H7v2h10zm-2 4H7v2h8zm-3.14 8.96V22h2.04l6.13-6.13L18 13.83zm9.85-6.49l-1.32-1.32a.24.24 0 0 0-.08-.06a.5.5 0 0 0-.62.04l-.02.02l-.98.98l2.04 2.04l.98-.98c.2-.19.2-.52 0-.72" />
-                </svg>
-            ),
-        },
-    ];
-
-    // Función que se llama cuando un elemento del menú es clicado
-    // Cambia el estado `selectedIndex` al índice del elemento clicado
     const handleItemClick = (index) => {
         setSelectedIndex(index);
-        console.log(index);
+    };
+
+    const handleSubElementClick = (index) => {
+        setVisibleSubElements(prevState => ({
+            ...prevState,
+            [index]: !prevState[index]
+        }));
     };
 
     return (
@@ -62,28 +25,48 @@ export default function SideBar({ children }) {
                 <img src={Logo} alt="Logo y Nombre del sistema" className="h-7 my-7 w-auto" />
                 {children}
             </div>
-            <ul className="w-full px-4">
+            <ul className="w-full px-4 gap-2 flex flex-col">
                 <li className="text-gray-500 text-lg my-4">Menu</li>
                 {
-                    // Mapeo de los elementos de navegación para crear una lista de ítems
                     NavElements.map((items, index) => {
-                        // Determina la clase adicional basada en si el elemento actual está seleccionado
-                        // Aplica estilos adicionales si el índice actual es igual a `selectedIndex`
-                        const activeClass = index === selectedIndex ? 'bg-big-stone-900 text-gray-200' : ' hover:bg-big-stone-800 text-gray-300';
+                        const activeClass = index === selectedIndex ? 'bg-big-stone-700 text-gray-200 border-b' : 'hover:bg-big-stone-800 text-gray-300'; 
                         return (
-                            <Link
-                                to={items.dirNav}
-                                key={index} // Llave única para identificar el elemento en la lista
-                                className={`w-full h-auto flex my-2 p-3 justify-start items-center rounded-lg gap-5 text-lg ${activeClass}`} // Clases dinámicas
-                                onClick={() => handleItemClick(index)} // Maneja el evento de clic
-                                >
-                                <div className="h-7 w-7">
-                                    {items.iconNav}
+                            <div key={index} className="w-full border rounded-lg overflow-hidden ">
+                                <div onClick={() => handleSubElementClick(index)} className='bg-big-stone-900 '>
+                                    <Link
+                                        
+                                        className={`w-full h-auto flex p-3 justify-start items-center rounded-lg gap-5 text-lg ${activeClass}`}
+                                        onClick={() => handleItemClick(index)}
+                                    >
+                                        <div className="h-7 w-7">
+                                            {items.iconNav}
+                                        </div>
+                                        <li>
+                                            {items.nameNav}
+                                        </li>
+                                    </Link>
                                 </div>
-                                <li >
-                                    {items.nameNav}
-                                </li> {/* Enlace de navegación */}
-                            </Link>
+                                {items.subNav && (
+                                    <ul className={`${visibleSubElements[index] ? ' h-auto' : 'h-0 overflow-hidden'}`}>
+                                        {items.subNav.map((subItem, subIndex) =>{
+                                            return(
+                                            <Link
+                                                to={subItem.dirSubNav}
+                                                key={subIndex}
+                                                className="w-full h-auto flex p-3 justify-start items-center rounded-lg gap-5 text-base text-gray-300 hover:bg-big-stone-700"
+                                                onClick={() => handleItemClick(index)}
+                                            >
+                                                <div className="h-5 w-5 ml-5">
+                                                    {subItem.iconSubNav}
+                                                </div>
+                                                <li>
+                                                    {subItem.nameSubNav}
+                                                </li>
+                                            </Link>
+                                        )})}
+                                    </ul>
+                                )}
+                            </div>
                         );
                     })
                 }

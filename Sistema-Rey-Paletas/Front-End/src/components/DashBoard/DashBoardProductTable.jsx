@@ -15,9 +15,9 @@ const DashBoardProductTable = () => {
                 </thead>
                 <tbody className='w-full flex flex-col gap-3'>
                     <tr className=' grid grid-cols-3 border-b dark:border-big-stone-700 p-2 '>
-                        <th className='flex justify-center flex-wrap  items-center'>
-                            <img src={Product} alt='0' className='rounded-lg w-20 ' />
-                            <span>reloj</span>
+                        <th className='text-center items-center  grid grid-cols-1 sm:grid-cols-4'>
+                            <img src={Product} alt='0' className='rounded-lg w-20 mx-auto' />
+                            <span className='col-span-2'>Choco Frutilla</span>
                         </th>
                         <th className='flex justify-center items-center text-green-400'>$1500</th>
                         <th className='flex justify-center items-center text-blue-400'>280        </th>

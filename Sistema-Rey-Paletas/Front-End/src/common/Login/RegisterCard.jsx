@@ -2,6 +2,7 @@ import { useState } from 'react'; // Importación de useState para el manejo de 
 import { InputLog } from './InputLog'; // Importación del componente InputLog
 import UsersService from '../../services/users/UserServices'; // Importación del servicio de usuarios
 import PropTypes from 'prop-types';
+import { BlockEyeIcon, EyeIcon } from '../../images/icons/Icons';
 
 const AlertElement = ({ mensaje, clase }) => {
   return (
@@ -11,23 +12,22 @@ const AlertElement = ({ mensaje, clase }) => {
   );
 };
 
-AlertElement.propTypes={
-  mensaje:PropTypes.string,
-  clase:PropTypes.string,
+AlertElement.propTypes = {
+  mensaje: PropTypes.string,
+  clase: PropTypes.string,
 }
 
 export default function RegisterCard() {
   // Estados para manejar los datos de entrada y mensajes de aviso
+  const [changeType, setChangeType] = useState(false); // Estado para mostrar mensajes de advertencia o éxito
   const [aviso, setAviso] = useState(""); // Estado para mostrar mensajes de advertencia o éxito
   const [firstName, setFirstName] = useState(""); // Estado para el primer nombre
   const [lastName, setLastName] = useState(""); // Estado para el apellido
   const [email, setEmail] = useState(""); // Estado para el correo electrónico
   const [ci, setCi] = useState(""); // Estado para el número de identificación (CI)
   const [password, setPassword] = useState(""); // Estado para la contraseña
-
-  // Variables constantes que no cambian
-  const role = "Employeed"; // Rol fijo asignado al usuario registrado
-  const codFranchise = "00"; // Código de franquicia fijo
+  const [codFranchise, setCodFranchise] = useState("");
+  const role = "Employeed";
 
   // Función para manejar la acción de registro del usuario
   const saveUser = (e) => {
@@ -92,7 +92,7 @@ export default function RegisterCard() {
   };
 
   // Componente para mostrar alertas (mensajes de aviso)
-  
+
 
   function renderAviso() {
     if (aviso === "") {
@@ -114,6 +114,11 @@ export default function RegisterCard() {
     }
   }
 
+  const handleChangeType = () => {
+
+    setChangeType(prevState => !prevState)
+  }
+
   return (
     <div className='w-full h-auto border m-3 bg-white p-2 overflow-hidden shadow-xl rounded-lg'>
       <h1 className="text-[2rem] font-bold m-2"> Vamos a Empezar</h1>
@@ -125,9 +130,9 @@ export default function RegisterCard() {
         <InputLog type='text' placeholder='Ingrese su Apellido' name='Apellido' onChangeF={(e) => setLastName(e.target.value)} value={lastName} clase="text-gray-400 border" />
         <InputLog type='text' placeholder='Ingrese su correo' name='Email' onChangeF={(e) => setEmail(e.target.value)} value={email} clase="text-gray-400 border" />
         <InputLog type='text' placeholder='Ingrese su Ci' name='CI' onChangeF={(e) => setCi(e.target.value)} value={ci} clase="text-gray-400 border" />
-        <InputLog type='password' placeholder='Ingrese su contraseña' onChangeF={(e) => setPassword(e.target.value)} value={password} name='Contraseña' clase="text-gray-400 border" />
-        <InputLog type='password' placeholder='Re-ingrese su contraseña' name='Contraseña' clase="text-gray-400 border" />
-        <button className='bg-blue-400 h-full w-auto p-4 rounded-lg  mx-3' onClick={(e) => saveUser(e)}>Registarse</button>
+        <InputLog type={`${changeType ? 'password' : 'text'}`} icon={changeType? <EyeIcon/> : <BlockEyeIcon/>} change={handleChangeType}  placeholder='Ingrese su contraseña' onChangeF={(e) => setPassword(e.target.value)} value={password} name='Contraseña' clase="text-gray-400 border" />
+        <InputLog type='text' placeholder='Codigo de franquicia ' onChangeF={(e) => setCodFranchise(e.target.value)} value={codFranchise} name='Codigo franquicia' clase="text-gray-400 border" />
+        <button type='submit' className='border p-4 rounded-lg bg-blue-400  lg:col-span-2 mx-4' onClick={(e) => saveUser(e)}>Registarse</button>
       </form>
     </div>
   );

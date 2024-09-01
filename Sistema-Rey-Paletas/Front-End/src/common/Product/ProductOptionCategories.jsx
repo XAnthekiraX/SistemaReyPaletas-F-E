@@ -1,34 +1,46 @@
+import { Select } from '@headlessui/react'
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import CategoryService from '../../services/category/categoryServices';
+import { getGlobalVariable } from '../../cookies/cookieManajer';
+const ProductOptionCategories = ({name, clase, openCard, value, onChangeF}) => {
 
-const ProductOptionCategories = () => {
+        const [listCategory, setListCategory] = useState([]);
+        const categoryService = new CategoryService();
+        const codFranchise = getGlobalVariable("codFranchise");
 
-    const categorias =[
-        {
-            nombre:"Cat1",
-        },
-        {
-            nombre:"Cat2"
-        },
-        {
-            nombre:"Cat3"
-        }
-    ]
-
+        useEffect(() => {
+            categoryService.getAllCategory(codFranchise)
+                .then(response => {
+                    setListCategory(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },[codFranchise]); // Agrega `codFranchise` al array de dependencias
+    
     return (
-
-        <div className="w-auto h-[4.7rem] rounded-lg gap-2 mx-3 mt-2 flex flex-col justify-center items-start">
-            <span className="mx-2 text-sm font-semibold">Categoría</span>
-            <select className="w-full h-full border rounded-lg px-2 bg-transparent text-gray-400 focus:ring-2 focus:ring-inset dark:border-big-stone-700 focus:ring-blue-400">
+        <div className='mx-3 my-1.5 flex flex-col font-sans gap-2  dark:text-white dark:bg-big-stone-900'>
+            <span className='text-sm font-semibold mx-1'>{name}</span>
+            <Select name="status" aria-label="Project status" className={`outline-none focus:outline-blue-400 border text-base p-3 rounded-lg text-wrap  ${clase} dark:bg-big-stone-900`} value={value} onChange={onChangeF}>
                 {
-                    categorias.map((item, index)=>{
-                        return(
-                            <option key={index} className="text-gray-600 bg-white">{item.nombre}</option>
-                        )
-                    })
+                    listCategory.map(category=>(
+                        <option key={category.codCategory} value={category.codCategory}>{category.nameCategory}</option>
+                    ))
                 }
-            </select>
+                <option onClick={openCard}>Nueva Categoría</option>
+            </Select>
         </div>
-    );
+    )
 };
 
 
 export default ProductOptionCategories;
+
+ProductOptionCategories.propTypes={
+    name:PropTypes.string,
+    clase:PropTypes.string,
+    openCard:PropTypes.func,
+    value:PropTypes.string,
+    onChangeF:PropTypes.func,
+}

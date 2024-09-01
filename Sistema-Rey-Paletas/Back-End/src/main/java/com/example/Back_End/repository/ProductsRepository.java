@@ -14,8 +14,5 @@ public interface ProductsRepository extends JpaRepository<Products, Long> {
 
     @Query(value = "SELECT * FROM products WHERE cod_franchise = :codFranchise", nativeQuery = true)
     List<Products> getProductsByFranchise(@Param("codFranchise") String codFranchise);
-
-    @Query(value = "SELECT * FROM products WHERE cod_franchise = :codFranchise AND cod_product = :codProduct", nativeQuery = true)
-    List<Products> getProductsByFranchiseAndId(@Param("codFranchise") String codFranchise, @Param("codProduct") String codProduct);
     
 }
