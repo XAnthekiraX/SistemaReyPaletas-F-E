@@ -2,7 +2,7 @@ import axios from "axios"
 
 const CLIENTE_BASE_REST_API_URL = 'http://localhost:8080/api/v3/products';
 
-class UsersService{
+class ProductServices{
     
     getAllProducts(codFranchise){
         return axios.get(`${CLIENTE_BASE_REST_API_URL}/${codFranchise}`);
@@ -14,4 +14,4 @@ class UsersService{
 }
 
 
-export default UsersService;
+export default ProductServices;
