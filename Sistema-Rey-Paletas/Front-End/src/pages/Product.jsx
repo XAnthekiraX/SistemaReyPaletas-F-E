@@ -10,7 +10,7 @@ const Product = () => {
         setOpenCard(prevState => !prevState)
     }
     return (
-        <div className="h-full gap-5 w-full flex overflow-hidden overflow-y-auto p-1 lg:p-7 relative">
+        <div className="h-screen  gap-5 w-full flex overflow-hidden overflow-y-auto p-1 lg:p-7 relative">
             <div className={`${openCard ? 'w-full h-full' : 'w-0 h-0'} bg-black  left-0 top-0 absolute  overflow-hidden flex justify-center items-center bg-opacity-50`}>
                 <CardNewCategory closeCard={handleClickCard}/>
             </div>

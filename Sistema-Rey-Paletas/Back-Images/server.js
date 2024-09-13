@@ -11,26 +11,20 @@ app.use(cors({
     origin: 'http://localhost:5173', // Reemplaza esto con la URL de tu frontend
 }));
 
-
-// Servir archivos estáticos desde la carpeta 'public/images'
-app.use('/images', express.static(path.join(__dirname, '../frontend/react/public/images')));
-
+// Servir archivos estáticos desde la carpeta 'public/images/products'
+app.use('/images', express.static(path.join(__dirname, '../Front-End/public/images/products')));
 
 // Configuración de almacenamiento de Multer para subir archivos
 const storage = multer.diskStorage({
-    // Define la carpeta de destino para los archivos subidos
     destination: (req, file, cb) => {
         const dir = '../Front-End/public/images/products'; // Ruta donde se guardarán las imágenes subidas
-        // Si la carpeta no existe, créala
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true }); // Crea la carpeta si no existe
         }
         cb(null, dir); // Pasa la ruta de destino a Multer
     },
-    // Define el nombre del archivo cuando se guarda
     filename: (req, file, cb) => {
-        // Usa la fecha actual y la extensión del archivo original para crear un nombre único
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname)); // Nombre único para el archivo
     },
 });
 
@@ -38,42 +32,42 @@ const upload = multer({ storage }); // Crea un objeto Multer con la configuraci�
 
 // Ruta para manejar la subida de imágenes
 app.post('/upload', upload.single('image'), (req, res) => {
-    // Verifica si se ha subido un archivo
     if (!req.file) {
-        return res.status(400).send({ message: 'No se ha subido ninguna imagen.' }); // Responde con un error si no hay archivo
+        return res.status(400).send({ message: 'No se ha subido ninguna imagen.' });
     }
 
-    const imagePath = req.file.path; // Obtiene la ruta del archivo subido
-
-    // Responde con un mensaje de éxito y detalles del archivo
     res.json({
         message: 'Imagen subida correctamente',
         file: {
-            originalname: req.file.originalname, // Nombre original del archivo
-            filename: req.file.filename, // Nombre del archivo después de ser guardado
-            path: req.file.path // Ruta completa del archivo guardado
+            originalname: req.file.originalname,
+            filename: req.file.filename,
+            path: req.file.path
         }
     });
 });
 
 // Ruta para eliminar una imagen
 app.delete('/delete/:filename', (req, res) => {
-    const filename = req.params.filename; // Obtiene el nombre del archivo desde los parámetros de la URL
-    const filePath = path.join(__dirname, '../frontend/react/public/images', filename); // Construye la ruta completa del archivo
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, '../Front-End/public/images/products', filename); // Ajusta la ruta
 
-    fs.unlink(filePath, (err) => {
-        // Si ocurre un error al eliminar el archivo, responde con un mensaje de error
-        if (err) {
-            console.error(`Error al eliminar el archivo ${filename}:`, err);
-            return res.status(500).send({ message: 'Error al eliminar la imagen.' });
-        }
-        // Si la eliminación es exitosa, responde con un mensaje de éxito
-        res.json({ message: 'Imagen eliminada correctamente' });
-    });
+    try {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`Error al eliminar el archivo ${filename}:`, err);
+                return res.status(500).send({ message: 'Error al eliminar la imagen.' });
+            }
+            res.json({ message: 'Imagen eliminada correctamente' });
+        });
+    } catch (error) {
+        console.error(`Error al procesar la solicitud de eliminación:`, error);
+        res.status(500).send({ message: 'Error al procesar la solicitud de eliminación.' });
+    }
 });
 
+
 // Inicia el servidor en el puerto especificado
-const PORT = process.env.PORT || 3001; // Usa el puerto de la variable de entorno o 3001 por defecto
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`); // Mensaje de confirmación al iniciar el servidor
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
