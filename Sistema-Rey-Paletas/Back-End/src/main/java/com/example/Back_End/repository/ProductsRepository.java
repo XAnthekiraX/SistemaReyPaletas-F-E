@@ -13,7 +13,7 @@ import com.example.Back_End.models.Products;
 @Repository
 public interface ProductsRepository extends JpaRepository<Products, Long> {
 
-    @Query(value = "SELECT * FROM products WHERE cod_franchise = :codFranchise", nativeQuery = true)
+    @Query(value = "SELECT * FROM products WHERE cod_franchise = :codFranchise ORDER BY name_product ASC", nativeQuery = true)
     List<Products> getProductsByFranchise(@Param("codFranchise") String codFranchise);
 
     Optional<Products>findByCodProduct(String codProduct);

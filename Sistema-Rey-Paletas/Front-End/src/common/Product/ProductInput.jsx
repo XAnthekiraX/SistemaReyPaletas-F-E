@@ -14,7 +14,10 @@ InputProduct.propTypes = {
     name:PropTypes.string,
     accept:PropTypes.string,
     clase:PropTypes.string,
-    value:PropTypes.string,
+    value:PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     onChangeF:PropTypes.func,
     onClickF:PropTypes.func,
 };
