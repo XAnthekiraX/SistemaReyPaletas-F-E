@@ -4,16 +4,14 @@ import { useEffect, useState } from 'react';
 import ProductServices from '../../services/products/productServices';
 import { getGlobalVariable } from '../../cookies/cookieManajer';
 
-export default function TableProduct() {
-    // Estados para manejar la lista de productos, mensajes y el estado de la tarjeta de confirmación de eliminación
+export default function TableProduct({ onClickEdit, shouldReload, tableReload }) {
+    // Estados para manejar la lista de productos y otras funcionalidades
     const [listProducts, setListProducts] = useState([]);
-    const [message, setMessage] = useState('');
     const [cardDelete, setCardDelete] = useState(false);
-    const [cardUpdated, setCardUpdated] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState({ filename: '', codProduct: '' }); // Producto seleccionado para eliminación
-    const [updatedProduct, setUpdatedProduct] = useState({ nameProduct: '', priceProduct: '', image:'' }); // Producto seleccionado para eliminación
+    const [selectedProduct, setSelectedProduct] = useState({ filename: '', codProduct: '' });
 
-    // Función para obtener la lista de productos
+
+    // Función para obtener productos
     const fetchProducts = () => {
         const codFranchise = getGlobalVariable("codFranchise");
         const productServices = new ProductServices();
@@ -21,18 +19,15 @@ export default function TableProduct() {
         productServices.getAllProducts(codFranchise)
             .then(response => {
                 setListProducts(response.data); // Guardar la lista de productos obtenida
-                console.log(response.data); // Mostrar los productos en la consola
             })
             .catch(error => {
                 console.error('Error al obtener productos:', error);
             });
     };
-
-    // useEffect para cargar los productos al montar el componente
+    // useEffect para cargar los productos al montar el componente o cuando cambie 'shouldReload'
     useEffect(() => {
         fetchProducts();
-    }, []);
-
+    }, [shouldReload]);
     // Función para eliminar un producto de la base de datos
     const deleteProduct = (codProduct) => {
         const productServices = new ProductServices();
@@ -40,13 +35,12 @@ export default function TableProduct() {
         productServices.deleteProducts(codProduct)
             .then(response => {
                 console.log('Producto eliminado:', response);
-                fetchProducts(); // Recargar los productos después de eliminar
+                tableReload()// Recargar los productos
             })
             .catch(error => {
                 console.error('Error al eliminar el producto:', error);
             });
     };
-
     // Manejo de la eliminación del producto e imagen asociados
     const handleDelete = (filename, codProduct) => {
         fetch(`http://localhost:3001/delete/${filename}`, {
@@ -54,28 +48,23 @@ export default function TableProduct() {
         })
             .then(response => response.json())
             .then(data => {
-                setMessage(data.message || 'Imagen eliminada.'); // Actualizar mensaje de éxito o error
+                console.log(data);
                 deleteProduct(codProduct); // Eliminar producto de la base de datos
                 toggleCardDelete(); // Ocultar tarjeta de confirmación
             })
             .catch(error => {
                 console.error('Error al eliminar la imagen:', error);
-                setMessage('Hubo un error al eliminar la imagen.'); // Mensaje de error
             });
     };
-
     // Mostrar/ocultar la tarjeta de confirmación de eliminación
     const toggleCardDelete = (filename = '', codProduct = '') => {
         setSelectedProduct({ filename, codProduct }); // Establecer el producto seleccionado
         setCardDelete(prevState => !prevState); // Alternar visibilidad de la tarjeta
     };
-
-
-    // Componente de tarjeta de confirmación para eliminar producto
     const CardConfirmDelete = ({ filename, codProduct }) => {
         return (
             <div className='absolute w-full h-full bg-opacity-50 top-0 left-0 flex flex-col justify-center items-center select-none'>
-                <div className='bg-white dark:bg-big-stone-700 rounded-lg p-4 gap-2 flex flex-col justify-center items-center w-auto h-auto text-black dark:text-white'>
+                <div className='bg-white dark:bg-big-stone-700 rounded-lg p-4 gap-2 flex flex-col justify-center items-center w-auto border shadow-lg h-auto text-black dark:text-white'>
                     <h1 className='text-xl font-bold'>¿Seguro que deseas eliminar el producto?</h1>
                     <div className='gap-3 grid grid-cols-2 mt-3'>
                         <div className='border p-2 rounded-lg text-center bg-green-500' onClick={() => handleDelete(filename, codProduct)}>Confirmar</div>
@@ -85,47 +74,15 @@ export default function TableProduct() {
             </div>
         );
     };
-
-    // Definición de tipos de propiedades esperadas
     CardConfirmDelete.propTypes = {
         filename: PropTypes.string.isRequired,
         codProduct: PropTypes.string.isRequired,
     };
 
-    const toggleCardUpdated = () => {
-        setCardUpdated(prevState => !prevState)
-    };
-
-    const CardConfirmUpdated = () => {
-        // Estado para el nombre del producto
-        const [nameProduct, setNameProduct] = useState("");
-        // Estado para el precio del producto
-        const [priceProduct, setPriceProduct] = useState("");
-        // Estado para la imagen del producto
-        const [image, setImage] = useState("");
-
-        return (
-            <div className='absolute bg-black bg-opacity-50 overflow-hidden w-full h-full top-0 left-0 flex flex-col justify-center items-center select-none'>
-                <div className='bg-white dark:bg-big-stone-700 rounded-lg p-4 gap-2 flex flex-col justify-center items-center w-auto h-auto text-black dark:text-white'>
-                    <h1 className='text-xl font-bold'>Editar Helado</h1>
-                    <div className='gap-3 grid grid-cols-2 mt-3'>
-                        <div className='border p-2 rounded-lg text-center bg-green-500' onClick>Confirmar</div>
-                        <div className='border p-2 rounded-lg text-center bg-red-500' onClick={toggleCardUpdated}>Cancelar</div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
 
     return (
         <div className="w-full font-sans flex flex-col bg-white shadow-lg border px-4 py-5 gap-4 dark:bg-big-stone-900 dark:border-big-stone-700 dark:text-white z-0">
-            {
-                cardUpdated && <CardConfirmUpdated />
-            }
-
-            {
-                cardDelete && <CardConfirmDelete filename={selectedProduct.filename} codProduct={selectedProduct.codProduct} />
-            }
+            {cardDelete && <CardConfirmDelete filename={selectedProduct.filename} codProduct={selectedProduct.codProduct} />}
             <span className="text-2xl ml-8 font-bold">Productos</span>
             {listProducts.length === 0 ? (
                 <h1 className="text-center text-xl">No hay productos agregados</h1>
@@ -154,7 +111,7 @@ export default function TableProduct() {
                                     <div onClick={() => toggleCardDelete(product.image, product.codProduct)} className='p-2 rounded-full hover:border'>
                                         <Garbage classname="text-red-500" />
                                     </div>
-                                    <div className='p-2 rounded-full hover:border' onClick={() => toggleCardUpdated()} >
+                                    <div className='p-2 rounded-full hover:border' onClick={() => onClickEdit(product.image, product.name, product.price, product.codCategory, product.codProduct)}>
                                         <Edit classname="text-blue-500" />
                                     </div>
                                 </td>
@@ -175,3 +132,9 @@ Garbage.propTypes = {
 Edit.propTypes = {
     classname: PropTypes.string,
 };
+
+TableProduct.propTypes = {
+    onClickEdit: PropTypes.func,
+    shouldReload: PropTypes.bool,
+    tableReload: PropTypes.func,
+}
