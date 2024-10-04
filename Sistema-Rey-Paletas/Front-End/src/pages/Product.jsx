@@ -29,10 +29,10 @@ const Product = () => {
     return (
         <div className="h-screen  gap-5 w-full flex overflow-hidden overflow-y-auto p-1 lg:p-7 relative">
             <div className={`${openCard ? 'w-full h-full' : 'w-0 h-0'} bg-black  left-0 top-0 absolute  overflow-hidden flex justify-center items-center bg-opacity-50`}>
-                <CardNewCategory closeCard={handleClickCard}/>
+                <CardNewCategory closeCard={handleClickCard} categoryReload={handleClickReaload}/>
             </div>
             <div>
-                <FormAddEditProduct openCard={handleClickCard} tableReload={handleClickReaload} changeEdit={changeFormEdit} onClickEditOf={hancleClickEditOff} updCategory={selectedUpdatedProducts.codCategory} updCodProduct={selectedUpdatedProducts.codProduct} updName={selectedUpdatedProducts.name} updPrice={selectedUpdatedProducts.price} updImage={selectedUpdatedProducts.image}/>
+                <FormAddEditProduct openCard={handleClickCard} shouldReload={shouldReload} tableReload={handleClickReaload} changeEdit={changeFormEdit} onClickEditOf={hancleClickEditOff} updCategory={selectedUpdatedProducts.codCategory} updCodProduct={selectedUpdatedProducts.codProduct} updName={selectedUpdatedProducts.name} updPrice={selectedUpdatedProducts.price} updImage={selectedUpdatedProducts.image}/>
                 <TableProduct onClickEdit={hancleClickEditOn} shouldReload={shouldReload} tableReload={handleClickReaload}/>
             </div>
         </div>

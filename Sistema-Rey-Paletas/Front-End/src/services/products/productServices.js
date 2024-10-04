@@ -19,16 +19,6 @@ class ProductServices {
         return axios.delete(`${CLIENTE_BASE_REST_API_URL}/${codProduct}`);
     }
 
-    // Buscar productos por nombre y código de franquicia
-    searchProductsByName(codFranchise, productName) {
-        return axios.get(`${CLIENTE_BASE_REST_API_URL}/searchByName`, {
-            params: {
-                codFranchise: codFranchise,
-                productName: productName
-            }
-        });
-    }
-
     // Actualizar un producto existente con código de franquicia
     updateProduct(codFranchise, codProduct, productDetails) {
         return axios.put(`${CLIENTE_BASE_REST_API_URL}/${codFranchise}/${codProduct}`, productDetails);

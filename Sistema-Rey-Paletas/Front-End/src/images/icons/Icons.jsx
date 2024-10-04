@@ -139,3 +139,17 @@ export const Edit = ({ classname }) => {
 Edit.propTypes={
     classname:PropTypes.string,
 }
+
+// Componente para el ícono de más (+)
+export const PLusIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v14m-7-7h14" />
+    </svg>
+);
+
+// Componente para el ícono de menos (-)
+export const MinusIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256">
+        <path fill="currentColor" d="M224 128a8 8 0 0 1-8 8H40a8 8 0 0 1 0-16h176a8 8 0 0 1 8 8" />
+    </svg>
+);

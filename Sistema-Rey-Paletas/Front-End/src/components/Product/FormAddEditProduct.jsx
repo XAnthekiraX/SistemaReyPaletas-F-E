@@ -5,7 +5,7 @@ import ProductOptionCategories from '../../common/Product/ProductOptionCategorie
 import { getGlobalVariable } from '../../cookies/cookieManajer';
 import ProductServices from '../../services/products/productServices';
 
-const FormAddEditProduct = ({ openCard, changeEdit, onClickEditOf, updCodProduct = '', updName = '', updPrice = 0, updCategory = '', updImage = '', tableReload }) => {
+const FormAddEditProduct = ({ openCard, changeEdit, onClickEditOf, updCodProduct = '', updName = '', updPrice = 0, updCategory = '', updImage = '', shouldReload, tableReload }) => {
     // Estado para el código del producto
     const [codProduct, setCodProduct] = useState("");
     // Estado para el nombre del producto
@@ -250,7 +250,7 @@ const FormAddEditProduct = ({ openCard, changeEdit, onClickEditOf, updCodProduct
                 {/* Campo para ingresar el precio del producto */}
                 <InputProduct name='Precio Venta' type='number' placeholder='Precio de venta' value={priceProduct} onChangeF={(e) => setPriceProduct(e.target.value)} />
                 {/* Selector de categoría del producto */}
-                <ProductOptionCategories name='Categoria' clase='bg-transparent' openCard={openCard} value={codCategory} onChangeF={(e) => setCodCategory(e.target.value)} />
+                <ProductOptionCategories name='Categoria' clase='bg-transparent' shouldReload={shouldReload} openCard={openCard} value={codCategory} onChangeF={(e) => setCodCategory(e.target.value)} />
                 {/* Campo para seleccionar una imagen */}
 
                 <div className={`${changeEdit ? 'grid grid-cols-2 col-span-2' : ''}`}>
@@ -279,6 +279,7 @@ FormAddEditProduct.propTypes = {
     updCategory: PropTypes.string,
     updImage: PropTypes.string,
     tableReload:PropTypes.func,
+    shouldReload:PropTypes.func,
 }
 
 export default FormAddEditProduct;

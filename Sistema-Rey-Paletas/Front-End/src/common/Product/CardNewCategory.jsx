@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CategoryService from '../../services/category/categoryServices';
 import { getGlobalVariable } from '../../cookies/cookieManajer';
 
-export default function CardNewCategory({ closeCard }) {
+export default function CardNewCategory({ closeCard, categoryReload }) {
     const [codCategory, setCodCategory] = useState("");
     const [nameCategory, setNameCategory] = useState("");
     const [description, setDescription] = useState("");
@@ -39,6 +39,7 @@ export default function CardNewCategory({ closeCard }) {
             // Si la solicitud es exitosa, limpiar el formulario y cerrar la tarjeta
             cleanForm();
             closeCard();
+            categoryReload();
         } catch (error) {
             console.error("Error al guardar la categoría:", error);
         }
@@ -77,17 +78,19 @@ export default function CardNewCategory({ closeCard }) {
         }
     }
 
-    const closeAllCard=()=>{
+    const closeAllCard = () => {
 
-        closeCard(),
-        setMessage('')
+        closeCard();
+        cleanForm();
+        setMessage('');
+        categoryReload();
     }
 
     return (
-        <form className='border w-96 h-auto grid grid-cols-1 gap-2 bg-white dark:bg-big-stone-900 flex-col dark:text-white p-3 rounded-lg'>
-        {
-            renderMensaje()
-        }
+        <form onSubmit={saveCategory} className='border w-96 h-auto grid grid-cols-1 gap-2 bg-white dark:bg-big-stone-900 flex-col dark:text-white p-3 rounded-lg'>
+            {
+                renderMensaje()
+            }
             <span className='text-2xl font-bold m-auto'>Agregar Categoría</span>
             <InputProduct
                 type="text"
@@ -114,13 +117,15 @@ export default function CardNewCategory({ closeCard }) {
                 clase='uppercase'
             />
             <div className='w-full grid grid-cols-2 text-center'>
-                <div className='border rounded-lg p-3 mx-4 bg-red-500' onClick={closeAllCard}>Cancelar</div>
-                <div className='border rounded-lg p-3 mx-4 bg-blue-500' onClick={saveCategory}>Guardar</div>
+                <button type="button" className='border rounded-lg p-3 mx-4 bg-red-500' onClick={closeAllCard}>Cancelar</button>
+                <button type="submit" className='border rounded-lg p-3 mx-4 bg-blue-500'>Guardar</button>
             </div>
         </form>
+
     );
 }
 
 CardNewCategory.propTypes = {
     closeCard: PropTypes.func.isRequired,
+    categoryReload: PropTypes.func,
 };

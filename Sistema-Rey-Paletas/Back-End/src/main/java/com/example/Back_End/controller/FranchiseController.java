@@ -1,84 +1,65 @@
 package com.example.Back_End.controller;
 
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.Back_End.exception.ResourceNotFoundException;
 import com.example.Back_End.models.Franchises;
 import com.example.Back_End.repository.FranchiseRepository;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
+import java.util.List;
+import java.util.Optional;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173/")
 @RestController
-@RequestMapping("/api/v3")
+@RequestMapping("/api/v3/franchises")
 public class FranchiseController {
 
     @Autowired
     private FranchiseRepository franchiseRepository;
 
-    // Método para manejar solicitudes Get
-    @GetMapping("/franchises")
+    @GetMapping
     public List<Franchises> listFranchises() {
         return franchiseRepository.findAll(Sort.by(Sort.Direction.ASC, "franchisesId"));
     }
 
-    @GetMapping("/franchises/{franchisesId}")
-    public ResponseEntity<Franchises> listFranchiseById(@PathVariable long franchisesId) {
-        Franchises franchises = franchiseRepository.findById(franchisesId)
-                .orElseThrow(() -> new ResourceNotFoundException("ID " + franchisesId + " no existe"));
-
+    @GetMapping("/code/{codFranchise}")
+    public ResponseEntity<Optional<Franchises>> getFranchisesByCode(@PathVariable String codFranchise) {
+        Optional<Franchises> franchises = franchiseRepository.findByCodFranchise(codFranchise);
+        if (franchises.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(franchises);
     }
 
-    // Método para manejar solicitudes Post
-    @PostMapping("/franchises")
-    public Franchises saveFranchises(@RequestBody Franchises franchises) {
-
-        return franchiseRepository.save(franchises);
+    @PostMapping
+    public Franchises createFranchise(@RequestBody Franchises franchise) {
+        return franchiseRepository.save(franchise);
     }
 
-    // Método para manejar solicitudes Put
-    @PutMapping("/franchises/{franchisesId}")
+    @PutMapping("/{franchisesId}")
     public ResponseEntity<Franchises> updateFranchise(@PathVariable Long franchisesId,
             @RequestBody Franchises franchiseRequest) {
-        Franchises franchises = franchiseRepository.findById(franchisesId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("ID" + franchisesId + "NO EXISTENTE"));
-
-        franchises.setCity(franchiseRequest.getCity());
-        franchises.setCodFranchise(franchiseRequest.getCodFranchise());
-        franchises.setCountry(franchiseRequest.getCountry());
-        franchises.setStatus(franchiseRequest.getStatus());
-
-        Franchises updtFranchises = franchiseRepository.save(franchises);
-        return ResponseEntity.ok(updtFranchises);
-    }
-
-    // Método para manejar solicitudes Delete
-    @DeleteMapping("/franchises/{franchisesId}")
-    public ResponseEntity<Map<String, Boolean>> deleteFranchises(@PathVariable Long franchisesId) {
-        Franchises franchises = franchiseRepository.findById(franchisesId)
+        Franchises franchise = franchiseRepository.findById(franchisesId)
                 .orElseThrow(() -> new ResourceNotFoundException("ID " + franchisesId + " no existe"));
 
-        franchiseRepository.delete(franchises);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
+        franchise.setCity(franchiseRequest.getCity());
+        franchise.setCodFranchise(franchiseRequest.getCodFranchise());
+        franchise.setCountry(franchiseRequest.getCountry());
+        franchise.setStatus(franchiseRequest.getStatus());
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(franchiseRepository.save(franchise));
     }
 
+    @DeleteMapping("/{franchisesId}")
+    public ResponseEntity<Map<String, Boolean>> deleteFranchise(@PathVariable Long franchisesId) {
+        Franchises franchise = franchiseRepository.findById(franchisesId)
+                .orElseThrow(() -> new ResourceNotFoundException("ID " + franchisesId + " no existe"));
+
+        franchiseRepository.delete(franchise);
+        return ResponseEntity.ok(Map.of("deleted", true));
+    }
 }

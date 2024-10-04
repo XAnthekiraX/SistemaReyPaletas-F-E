@@ -1,55 +1,55 @@
-import {  AddProductIcon, DashBoardIcon, HomeIcon, InventoryIcon, InvoiceIcon, InvoicesIcon, MovementsIcon,  OrderIcon,  ProductsIcon, SendPointIcon, UserIcon } from '../../images/icons/Icons';
+import { AddProductIcon, DashBoardIcon, HomeIcon, InventoryIcon, InvoiceIcon, InvoicesIcon, MovementsIcon, OrderIcon, ProductsIcon, SendPointIcon, UserIcon } from '../../images/icons/Icons';
 export const NavElements = [
     {
         nameNav: 'Dashboard',
         dirNav: '/',
         iconNav: (
-            <DashBoardIcon/>
+            <DashBoardIcon />
         ),
         subNav: [
             {
                 nameSubNav: 'Home',
                 dirSubNav: '/',
                 iconSubNav: (
-                    <HomeIcon/>
+                    <HomeIcon />
                 ),
             },
             {
                 nameSubNav: 'Perfil',
                 dirSubNav: '/Dashboard/Profile',
                 iconSubNav: (
-                    <UserIcon/>
+                    <UserIcon />
                 ),
             },
-            
+
         ],
     },
     {
         nameNav: 'Productos',
         dirNav: '/Product',
         iconNav: (
-            <ProductsIcon clase="h-full w-full"/>
+            <ProductsIcon clase="h-full w-full" />
         ),
         subNav: [
             {
                 nameSubNav: 'Añadir Nuevo Producto',
                 dirSubNav: '/Product',
                 iconSubNav: (
-                    <AddProductIcon/>
+                    <AddProductIcon />
                 ),
             },
             {
                 nameSubNav: 'Inventario',
                 dirSubNav: '/Product/Inventory',
                 iconSubNav: (
-                    <InventoryIcon/>
+                    <InventoryIcon />
                 ),
             },
             {
                 nameSubNav: 'Registro de Movimientos',
                 dirSubNav: '/Product/Movements',
                 iconSubNav: (
-                    <MovementsIcon/>
+                    <MovementsIcon />
                 ),
             },
         ],
@@ -58,35 +58,35 @@ export const NavElements = [
         nameNav: 'Pedidos',
         dirNav: '/Orders',
         iconNav: (
-            <OrderIcon/>
+            <OrderIcon />
         ),
         subNav: [
             {
                 nameSubNav: 'Pedidos Punto de Venta',
                 dirSubNav: '/Orders',
                 iconSubNav: (
-                    <SendPointIcon/>
+                    <SendPointIcon />
                 ),
             },
             {
                 nameSubNav: 'Pedidos Franquicia',
                 dirSubNav: '/Orders/Franchise',
                 iconSubNav: (
-                    <OrderIcon/>
+                    <OrderIcon />
                 ),
             },
             {
                 nameSubNav: 'Estado de Pedidos',
                 dirSubNav: '/Orders/Status',
                 iconSubNav: (
-                    <OrderIcon/>
+                    <OrderIcon />
                 ),
             },
             {
                 nameSubNav: 'Historial de Pedidos',
                 dirSubNav: '/Orders/History',
                 iconSubNav: (
-                    <MovementsIcon/>
+                    <MovementsIcon />
                 ),
             },
         ],
@@ -95,41 +95,41 @@ export const NavElements = [
         nameNav: 'Facturas',
         dirNav: '/Invoices',
         iconNav: (
-            <InvoicesIcon/>
+            <InvoicesIcon />
         ),
         subNav: [
             {
                 nameSubNav: 'Factura Franquicia',
                 dirSubNav: '/Invoices/Franchise',
                 iconSubNav: (
-                    <InvoicesIcon/>
+                    <InvoicesIcon />
                 ),
             },
             {
                 nameSubNav: 'Facturas Puntos de Venta',
                 dirSubNav: '/Invoices/SalesPoint',
                 iconSubNav: (
-                    <InvoicesIcon/>
+                    <InvoicesIcon />
                 ),
             },
             {
                 nameSubNav: 'Estado de Facturas',
                 dirSubNav: '/Invoices/Status',
                 iconSubNav: (
-                    <InvoiceIcon/>
+                    <InvoiceIcon />
                 ),
             },
             {
                 nameSubNav: 'Historial de Facturas',
                 dirSubNav: '/Invoices/History',
                 iconSubNav: (
-                    <InvoicesIcon/>
+                    <InvoicesIcon />
                 ),
             },
         ],
 
-        
+
     },
 
-    
+
 ];

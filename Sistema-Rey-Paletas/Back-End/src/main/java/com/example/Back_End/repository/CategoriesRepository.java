@@ -9,7 +9,11 @@ import org.springframework.stereotype.Repository;
 import com.example.Back_End.models.Category;
 
 @Repository
-public interface CategoriesRepository  extends JpaRepository<Category, Long>{
-    Optional<Category> findByCodCategory(String codCategory);
+public interface CategoriesRepository extends JpaRepository<Category, Long> {
+
     List<Category> findByCodFranchise(String codFranchise);
+
+    // También necesitas asegurarte de que haya un método para encontrar por
+    // codCategory
+    Optional<Category> findByCodCategory(String codCategory);
 }

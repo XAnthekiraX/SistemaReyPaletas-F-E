@@ -1,36 +1,32 @@
 package com.example.Back_End.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="categories")
+@Table(name = "categories")
 public class Category {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
-    @Column(name="cod_category")
+    @Column(name = "cod_category", unique = true, nullable = false)
     private String codCategory;
 
-    @Column(name = "name_category")
+    @Column(name = "name_category", nullable = false)
     private String nameCategory;
 
-    @Column (name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column (name="cod_franchise")
+    // Solo se almacena el código de la franquicia
+    @Column(name = "cod_franchise", nullable = false)
     private String codFranchise;
+
+    
 
 }

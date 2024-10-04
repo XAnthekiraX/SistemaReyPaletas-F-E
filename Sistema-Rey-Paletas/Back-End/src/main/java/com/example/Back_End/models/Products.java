@@ -39,7 +39,4 @@ public class Products {
 
     @Column(name = "image")
     private String image;
-
-
-
 }

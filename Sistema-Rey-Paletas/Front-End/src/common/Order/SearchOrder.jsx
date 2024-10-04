@@ -1,159 +1,129 @@
-import PropTypes from 'prop-types'; // Importa PropTypes para validar los tipos de propiedades de los componentes.
-import { useState } from 'react'; // Importa useState de React para manejar el estado de los componentes.
+import PropTypes from 'prop-types'; // Importación para la validación de tipos de las props.
+import { useEffect, useState } from 'react'; // Importación de 'useState' de React para manejar el estado en componentes funcionales.
+import ProductServices from '../../services/products/productServices'; // Servicio personalizado para obtener productos.
+import { getGlobalVariable } from '../../cookies/cookieManajer'; // Función para obtener variables globales guardadas en las cookies.
+import { ProductViewList } from './ProductListView';
+import { ProductOrder } from './ProductOrder';
 
-// Componente para el ícono de más (+)
-const PLusIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v14m-7-7h14" />
-    </svg>
-);
 
-// Componente para el ícono de menos (-)
-const MinusIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256">
-        <path fill="currentColor" d="M224 128a8 8 0 0 1-8 8H40a8 8 0 0 1 0-16h176a8 8 0 0 1 8 8" />
-    </svg>
-);
-
-// Componente que muestra la lista de productos disponibles para seleccionar
-const ProductViewList = ({ name, price, onClick }) => (
-    <li className='flex w-full justify-between px-10 hover:bg-big-stone-400 dark:bg-big-stone-800 my-1 dark:text-white dark:hover:bg-white dark:hover:text-black rounded-sm'
-        onClick={onClick}>
-        <span>{name}</span> {/* Muestra el nombre del producto */}
-        <span>{price}</span> {/* Muestra el precio del producto */}
-    </li>
-);
-
-// Definición de los tipos de propiedades para ProductViewList
-ProductViewList.propTypes = {
-    name: PropTypes.string.isRequired, // El nombre debe ser una cadena y es obligatorio
-    price: PropTypes.number.isRequired, // El precio debe ser un número y es obligatorio
-    onClick: PropTypes.func.isRequired // onClick debe ser una función y es obligatorio
-};
-
-// Componente que muestra los productos seleccionados con botones para incrementar o decrementar la cantidad
-const ProductOrder = ({ name, count, onIncrement, onDecrement }) => (
-    <li className='w-full grid grid-cols-3 dark:text-white'>
-        <span className='border w-full flex justify-center items-center'>{name}</span> {/* Muestra el nombre del producto seleccionado */}
-        <div className='border flex justify-center items-center gap-3'>
-            <div className='p-1 rounded-full border border-black dark:border-white' onClick={onDecrement}>
-                <MinusIcon /> {/* Botón para decrementar la cantidad */}
-            </div>
-            <span>{count}</span> {/* Muestra la cantidad actual del producto */}
-            <div className='p-1 rounded-full border border-black dark:border-white' onClick={onIncrement}>
-                <PLusIcon /> {/* Botón para incrementar la cantidad */}
-            </div>
-        </div>
-        <span className='border w-full justify-center items-center text-center dark:text-white'>1</span>
-    </li>
-);
-
-// Definición de los tipos de propiedades para ProductOrder
-ProductOrder.propTypes = {
-    name: PropTypes.string.isRequired, // El nombre debe ser una cadena y es obligatorio
-    count: PropTypes.number.isRequired, // La cantidad debe ser un número y es obligatorio
-    onIncrement: PropTypes.func.isRequired, // onIncrement debe ser una función y es obligatorio
-    onDecrement: PropTypes.func.isRequired // onDecrement debe ser una función y es obligatorio
-};
-
-// Datos de ejemplo de los productos disponibles
-const ProductData = [
-    { name: 'Choco Menta', price: 1.60 },
-    { name: 'Choco Trufa', price: 1.60 },
-    { name: 'Mix Fruta', price: 2.1 },
-    { name: 'Mango sal', price: 0.50 }
-];
-
-// Componente principal que maneja la búsqueda y selección de productos
+// Componente principal que maneja la búsqueda y selección de productos en un pedido.
 export default function SearchOrder({ onClose }) {
-    const [search, setSearch] = useState(''); // Estado para el texto de búsqueda
-    const [selectedProducts, setSelectedProducts] = useState([]); // Estado para los productos seleccionados
+    const [search, setSearch] = useState(''); // Estado para manejar el texto de búsqueda.
+    const [selectedProducts, setSelectedProducts] = useState([]); // Estado para manejar la lista de productos seleccionados.
+    const [listProducts, setListProducts] = useState([]); // Estado para manejar la lista de productos disponibles.
+    const [totalValue, setTotalValue] = useState(0);
+    console.log(selectedProducts);
 
-    // Filtra los productos basándose en el texto de búsqueda
-    const filteredProducts = ProductData.filter(product =>
+    // Llama al servicio para obtener todos los productos de la franquicia.
+    useEffect(() => {
+        const productServices = new ProductServices(); // Crea una instancia del servicio de productos.
+        const codFranchise = getGlobalVariable('codFranchise'); // Obtiene el código de la franquicia de las cookies.
+        productServices.getAllProducts(codFranchise)
+            .then(response => {
+                setListProducts(response.data); // Almacena los productos obtenidos en el estado.
+                setTotalValue(response.data.price)
+            })
+            .catch(error => {
+                console.error('Error al obtener productos:', error); // Muestra un error en caso de que falle la petición.
+            });
+    }, []);
+
+    // Filtra los productos según el texto de búsqueda ingresado.
+    const filteredProducts = listProducts.filter(product =>
         product.name.toLowerCase().includes(search.toLowerCase())
     );
 
-    // Maneja el evento de clic en un producto para agregarlo a la lista de seleccionados
+    // Maneja la selección de un producto de la lista de búsqueda.
     const handleProductClick = (product) => {
         setSelectedProducts(prevSelected => {
-            // Si el producto ya está en la lista, no lo agregamos nuevamente
             if (prevSelected.some(item => item.name === product.name)) {
-                return prevSelected;
+                return prevSelected; // Si el producto ya está seleccionado, no lo agrega de nuevo.
             }
-            // Agrega el producto con una cantidad inicial de 1
-            return [...prevSelected, { ...product, count: 1 }];
+            return [...prevSelected, { ...product, count: 1 }]; // Agrega el producto seleccionado con una cantidad inicial de 1.
         });
     };
 
-    // Incrementa la cantidad de un producto en la lista de seleccionados
+    // Incrementa la cantidad de un producto seleccionado.
     const incrementCount = (index) => {
         setSelectedProducts(prevSelected => {
             const newSelected = [...prevSelected];
-            newSelected[index].count += 1;
+            newSelected[index].count += 1; // Aumenta la cantidad del producto en 1.
             return newSelected;
         });
     };
 
-    // Decrementa la cantidad de un producto en la lista de seleccionados
+    // Decrementa la cantidad de un producto seleccionado.
     const decrementCount = (index) => {
         setSelectedProducts(prevSelected => {
             const newSelected = [...prevSelected];
-            // Asegura que la cantidad mínima sea 1
-            newSelected[index].count = Math.max(1, newSelected[index].count - 1);
+            newSelected[index].count = Math.max(1, newSelected[index].count - 1); // Reduce la cantidad pero no permite que sea menor a 1.
             return newSelected;
         });
     };
 
+    const closeCard =()=>{
+        onClose();
+        setSelectedProducts([]);
+        setSearch('');
+    }
     return (
         <div className="w-full flex flex-col gap-3">
+            {/* Input de búsqueda de productos */}
             <div className="w-full flex flex-col relative items-center">
                 <div className='w-full flex relative items-center'>
+                    {/* Icono de búsqueda */}
                     <svg className="absolute text-gray-500 mx-2" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39M11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7" />
                     </svg>
+                    {/* Input de texto para la búsqueda */}
                     <input
-                        className="w-full pl-8 py-3 border rounded-lg bg-transparent outline-none focus:outline-blue-500"
+                        className="w-full pl-8 py-3 border rounded-lg bg-transparent outline-none focus:outline-blue-500 dark:text-white"
                         type="search"
                         placeholder="Buscar Producto"
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)} // Actualiza el texto de búsqueda en el estado
+                        onChange={(e) => setSearch(e.target.value)} // Actualiza el estado 'search' conforme se escribe.
                     />
                 </div>
-                <ul className='w-full h-auto'>
-                    {/* Muestra la lista de productos filtrados */}
-                    {filteredProducts.map((item, index) => (
-                        <ProductViewList
-                            name={item.name}
-                            price={item.price}
-                            key={index}
-                            onClick={() => handleProductClick(item)} // Llama a handleProductClick cuando se hace clic en un producto
-                        />
-                    ))}
-                </ul>
+
+                {/* Muestra la lista de productos filtrados solo si hay texto en la búsqueda */}
+                {search && (
+                    <ul className='w-full h-auto'>
+                        {filteredProducts.map((item, index) => (
+                            <ProductViewList
+                                name={item.name}
+                                price={item.price}
+                                key={index}
+                                onClick={() => handleProductClick(item)} // Manejador de clic para seleccionar un producto.
+                            />
+                        ))}
+                    </ul>
+                )}
             </div>
+
+            {/* Lista de productos seleccionados para el pedido */}
             <ul className='w-full h-auto'>
-                {/* Muestra la lista de productos seleccionados con sus cantidades */}
                 {selectedProducts.map((item, index) => (
                     <ProductOrder
                         key={index}
                         name={item.name}
                         count={item.count}
-                        onIncrement={() => incrementCount(index)} // Llama a incrementCount cuando se incrementa la cantidad
-                        onDecrement={() => decrementCount(index)} // Llama a decrementCount cuando se decrementa la cantidad
+                        totalAmount={item.count * totalValue}
+                        onIncrement={() => incrementCount(index)} // Manejador para incrementar la cantidad.
+                        onDecrement={() => decrementCount(index)} // Manejador para decrementar la cantidad.
                     />
                 ))}
             </ul>
+
+            {/* Botones para guardar o cancelar la selección */}
             <div className="w-full flex justify-evenly dark:text-white">
-                {/* Botones para guardar o cancelar */}
-                <div className="bg-green-400 p-2 rounded-lg hover:bg-green-500" onClick={onClose}>Guardar</div>
-                <div className="bg-red-400 p-2 rounded-lg hover:bg-red-500" onClick={onClose}>Cancelar</div>
+                <div className="bg-green-400 p-2 rounded-lg hover:bg-green-500" onClick={closeCard}>Guardar</div> {/* Botón para guardar */}
+                <div className="bg-red-400 p-2 rounded-lg hover:bg-red-500" onClick={closeCard}>Cancelar</div> {/* Botón para cancelar */}
             </div>
         </div>
     );
 }
 
-// Definición de los tipos de propiedades para SearchOrder
+// Definición de los tipos de las props para 'SearchOrder'
 SearchOrder.propTypes = {
-    onClose: PropTypes.func.isRequired // onClose debe ser una función y es obligatorio
+    onClose: PropTypes.func.isRequired, // 'onClose' debe ser una función requerida.
 };
