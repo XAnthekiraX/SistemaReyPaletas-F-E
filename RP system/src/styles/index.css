@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@import "tailwindcss-animated";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Colores personalizados */
+.bg-big-stone-50 {
+  background-color: #f5f7fa;
+}
+.bg-big-stone-100 {
+  background-color: #eaeef4;
+}
+.bg-big-stone-200 {
+  background-color: #d0dbe7;
+}
+.bg-big-stone-300 {
+  background-color: #a7bdd2;
+}
+.bg-big-stone-400 {
+  background-color: #779bb9;
+}
+.bg-big-stone-500 {
+  background-color: #567ea1;
+}
+.bg-big-stone-600 {
+  background-color: #436586;
+}
+.bg-big-stone-700 {
+  background-color: #37526d;
+}
+.bg-big-stone-800 {
+  background-color: #31455b;
+}
+.bg-big-stone-900 {
+  background-color: #2c3c4e;
+}
+.bg-big-stone-950 {
+  background-color: #24303f;
+}
+
+.bg-shark-50 {
+  background-color: #f5f7fa;
+}
+.bg-shark-100 {
+  background-color: #eaeef4;
+}
+.bg-shark-200 {
+  background-color: #d1dce6;
+}
+.bg-shark-300 {
+  background-color: #a8bed1;
+}
+.bg-shark-400 {
+  background-color: #799ab7;
+}
+.bg-shark-500 {
+  background-color: #587e9f;
+}
+.bg-shark-600 {
+  background-color: #456584;
+}
+.bg-shark-700 {
+  background-color: #39516b;
+}
+.bg-shark-800 {
+  background-color: #32465a;
+}
+.bg-shark-900 {
+  background-color: #2d3c4d;
+}
+.bg-shark-950 {
+  background-color: #1a222c;
+}
+
+.bg-athens-gray-50 {
+  background-color: #f5f8fa;
+}
+.bg-athens-gray-100 {
+  background-color: #eff3f7;
+}
+.bg-athens-gray-200 {
+  background-color: #d0dde7;
+}
+.bg-athens-gray-300 {
+  background-color: #a6bfd3;
+}
+.bg-athens-gray-400 {
+  background-color: #769eba;
+}
+.bg-athens-gray-500 {
+  background-color: #5582a2;
+}
+.bg-athens-gray-600 {
+  background-color: #416988;
+}
+.bg-athens-gray-700 {
+  background-color: #36546e;
+}
+.bg-athens-gray-800 {
+  background-color: #30495c;
+}
+.bg-athens-gray-900 {
+  background-color: #2c3f4e;
+}
+.bg-athens-gray-950 {
+  background-color: #1d2934;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    top: -15%;
+  }
+  to {
+    opacity: 1;
+    top: 0%;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    top: 0%;
+  }
+  to {
+    opacity: 0;
+    top: -15%;
+  }
+}
